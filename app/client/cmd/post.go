@@ -23,7 +23,7 @@ import (
 	"net/http"
 	"time"
 
-	sshlogin "github.com/mattkasun/ssh-login"
+	"github.com/mattkasun/sshlogin"
 	"github.com/spf13/cobra"
 )
 

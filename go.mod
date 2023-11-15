@@ -1,4 +1,4 @@
-module github.com/mattkasun/ssh-login
+module github.com/mattkasun/sshlogin
 
 go 1.21.4
 

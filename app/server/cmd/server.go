@@ -10,7 +10,7 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
-	sshlogin "github.com/mattkasun/ssh-login"
+	"github.com/mattkasun/sshlogin"
 	"golang.org/x/crypto/ssh"
 )
 
