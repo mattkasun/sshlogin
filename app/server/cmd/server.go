@@ -73,7 +73,31 @@ func setupRouter() *gin.Engine {
 		users[reg.User] = reg.Key
 		c.String(http.StatusOK, "registration successfull")
 	})
+	restricted := r.Group("/pages", auth)
+	{
+		restricted.GET("", func(c *gin.Context) {
+			c.String(http.StatusOK, c.Request.RemoteAddr)
+		})
+		restricted.POST("", func(c *gin.Context) {
+			data := sshlogin.Data{}
+			if err := c.ShouldBind(data); err != nil {
+				c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+				return
+			}
+			c.JSON(http.StatusOK, data)
+		})
+	}
 	return r
+}
+
+func auth(c *gin.Context) {
+	session := sessions.Default(c)
+	loggedIn := session.Get("loggedIn")
+	if loggedIn != true {
+		c.String(http.StatusUnauthorized, "access denied")
+		c.Abort()
+		return
+	}
 }
 
 func randomString(n int) string {

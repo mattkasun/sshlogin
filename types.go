@@ -14,3 +14,9 @@ type Registation struct {
 	User string `json:"user"`
 	Key  string `json:"key"`
 }
+
+// Data contains infomation to post to server
+type Data struct {
+	Line1 string
+	Line2 string
+}
