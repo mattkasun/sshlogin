@@ -61,7 +61,7 @@ func init() {
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	rootCmd.Flags().IntVarP(&port, "port", "p", 8080, "server port")
-	rootCmd.Flags().BoolP("help", "h", false, "display help")
+	//rootCmd.Flags().BoolP("help", "h", false, "display help")
 }
 
 // initConfig reads in config file and ENV variables if set.
