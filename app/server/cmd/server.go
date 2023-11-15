@@ -75,12 +75,12 @@ func setupRouter() *gin.Engine {
 	})
 	restricted := r.Group("/pages", auth)
 	{
-		restricted.GET("", func(c *gin.Context) {
+		restricted.GET("/ip", func(c *gin.Context) {
 			c.String(http.StatusOK, c.Request.RemoteAddr)
 		})
-		restricted.POST("", func(c *gin.Context) {
+		restricted.POST("/lines", func(c *gin.Context) {
 			data := sshlogin.Data{}
-			if err := c.ShouldBind(data); err != nil {
+			if err := c.ShouldBindJSON(&data); err != nil {
 				c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 				return
 			}
