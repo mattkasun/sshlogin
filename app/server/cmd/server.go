@@ -7,6 +7,8 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 	sshlogin "github.com/mattkasun/ssh-login"
 	"golang.org/x/crypto/ssh"
@@ -22,6 +24,10 @@ func run(p int) {
 
 func setupRouter() *gin.Engine {
 	r := gin.Default()
+	store := cookie.NewStore([]byte("ThisSecretShouldBeChangedInProduction"))
+	store.Options(sessions.Options{MaxAge: 300, Secure: true, HttpOnly: true, SameSite: http.SameSiteStrictMode})
+	session := sessions.Sessions("sshlogin", store)
+	r.Use(session)
 	r.GET("/hello", func(c *gin.Context) {
 		c.String(200, randomString(14))
 	})
@@ -48,6 +54,9 @@ func setupRouter() *gin.Engine {
 			c.JSON(401, gin.H{"error": err.Error()})
 			return
 		}
+		session := sessions.Default(c)
+		session.Set("loggedIn", true)
+		session.Save()
 		c.JSON(200, gin.H{"message": "Hello World"})
 	})
 	r.POST("/register", func(c *gin.Context) {
