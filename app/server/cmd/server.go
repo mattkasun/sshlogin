@@ -56,6 +56,11 @@ func setupRouter() *gin.Engine {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
+		_, ok := users[reg.User]
+		if ok {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "username is taken"})
+			return
+		}
 		users[reg.User] = reg.Key
 		c.String(http.StatusOK, "registration successfull")
 	})
