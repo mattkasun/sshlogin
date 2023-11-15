@@ -32,7 +32,7 @@ var (
 var rootCmd = &cobra.Command{
 	Use:   "server",
 	Short: "POC server for ssh login",
-	Long:  `A server which supports user registeration and login`,
+	Long:  `A server which supports user registeration and login via ssh`,
 	Run: func(cmd *cobra.Command, args []string) {
 		p, err := cmd.Flags().GetInt("port")
 		cobra.CheckErr(err)

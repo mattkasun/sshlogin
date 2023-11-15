@@ -56,6 +56,7 @@ func setupRouter() *gin.Engine {
 		}
 		session := sessions.Default(c)
 		session.Set("loggedIn", true)
+		session.Set("user", login.User)
 		session.Save()
 		c.JSON(200, gin.H{"message": "Hello World"})
 	})
@@ -79,7 +80,7 @@ func setupRouter() *gin.Engine {
 			c.String(http.StatusOK, c.Request.RemoteAddr)
 		})
 		restricted.POST("/lines", func(c *gin.Context) {
-			data := sshlogin.Data{}
+			data := make(map[string]string)
 			if err := c.ShouldBindJSON(&data); err != nil {
 				c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 				return
@@ -91,7 +92,19 @@ func setupRouter() *gin.Engine {
 }
 
 func auth(c *gin.Context) {
+	var empty interface{}
 	session := sessions.Default(c)
+	user := session.Get("user")
+	if user == empty {
+		c.String(http.StatusUnauthorized, "access denied")
+		c.Abort()
+		return
+	}
+	if _, ok := users[user.(string)]; !ok {
+		c.String(http.StatusUnauthorized, "access denied")
+		c.Abort()
+		return
+	}
 	loggedIn := session.Get("loggedIn")
 	if loggedIn != true {
 		c.String(http.StatusUnauthorized, "access denied")
