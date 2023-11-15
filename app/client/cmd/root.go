@@ -33,7 +33,7 @@ var (
 var rootCmd = &cobra.Command{
 	Use:   "client",
 	Short: "client POC to register/login to server using ssh",
-	Long:  `client code to register/login app server using ssh`,
+	Long:  `client code to register/login to app server using ssh`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) { },

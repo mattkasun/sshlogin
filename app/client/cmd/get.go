@@ -33,6 +33,7 @@ var getCmd = &cobra.Command{
 	Short: "http get request",
 	Long: `send http get request 
 
+Ex: ./client get ip
 must be logged in to the server`,
 	Run: func(cmd *cobra.Command, args []string) {
 		get(server, args[0], port)

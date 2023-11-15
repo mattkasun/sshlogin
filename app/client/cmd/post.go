@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/mattkasun/sshlogin"
@@ -29,13 +30,19 @@ import (
 
 // postCmd represents the post command
 var postCmd = &cobra.Command{
-	Use:   "post page line1 line2",
-	Args:  cobra.ExactArgs(3),
+	Use:   "post page [key value ...]",
 	Short: "send post request to server",
-	Long: `send post request to server
-specifying page and json data`,
+	Long: `send post request to server specifying page and data in form of key value pairs
+	
+	Ex: ./server post lines hello world`,
 	Run: func(cmd *cobra.Command, args []string) {
-		post(server, args[0], args[1], args[2], port)
+		path := args[0]
+		data := args[1:]
+		if len(data)%2 != 0 {
+			cobra.CheckErr("invalid number of args")
+			os.Exit(1)
+		}
+		post(port, server, path, data)
 	},
 }
 
@@ -53,13 +60,17 @@ func init() {
 	// postCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
-func post(server, page, line1, line2 string, port int) {
+func post(port int, server, page string, args []string) {
 	cookie := getCookie()
 	client := http.Client{Timeout: time.Second}
 	url := fmt.Sprintf("%s:%d/pages/%s", server, port, page)
-	data := sshlogin.Data{
-		Line1: line1,
-		Line2: line2,
+	data := make(map[string]string)
+	fmt.Println(args)
+	for i := 0; i < len(args); i++ {
+		if i%2 != 0 {
+			continue
+		}
+		data[args[i]] = args[i+1]
 	}
 	payload, err := json.Marshal(data)
 	cobra.CheckErr(err)

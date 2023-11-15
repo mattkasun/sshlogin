@@ -34,13 +34,14 @@ import (
 var loginCmd = &cobra.Command{
 	Use:   "login user",
 	Args:  cobra.ExactArgs(1),
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "login using ssh key",
+	Long: `login to an app server with ssh
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+a string is retrieved from server and signed with ssh private key;
+the string, signature and user name is returned to server which
+will verify signature and provide a session cookie for future 
+calls to protected endpoints`,
+
 	Run: func(cmd *cobra.Command, args []string) {
 		key, err := cmd.Flags().GetString("key")
 		cobra.CheckErr(err)
