@@ -23,7 +23,11 @@ import (
 	"github.com/spf13/viper"
 )
 
-var cfgFile string
+var (
+	cfgFile string
+	server  string
+	port    int
+)
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -52,8 +56,8 @@ func init() {
 	// will be global for your application.
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.client.yaml)")
-	rootCmd.PersistentFlags().IntP("port", "p", 8080, "port to connect to")
-	rootCmd.PersistentFlags().StringP("server", "s", "http://localhost", "server url")
+	rootCmd.PersistentFlags().IntVar(&port, "port", 8080, "port to connect to")
+	rootCmd.PersistentFlags().StringVar(&server, "server", "http://localhost", "server url")
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.

@@ -32,17 +32,10 @@ var registerCmd = &cobra.Command{
 	Use:   "register username",
 	Args:  cobra.ExactArgs(1),
 	Short: "register user with server",
-	Long: `register user with server
-
-	server name can be specified with -s --server flag
-	server port can be specified with -p --port flag`,
+	Long:  `register user with server`,
 
 	Run: func(cmd *cobra.Command, args []string) {
-		key, err := cmd.Flags().GetString("pubkey")
-		cobra.CheckErr(err)
-		server, err := cmd.Flags().GetString("server")
-		cobra.CheckErr(err)
-		port, err := cmd.Flags().GetInt("port")
+		key, err := cmd.Flags().GetString("key")
 		cobra.CheckErr(err)
 		if err := register(args[0], server, key, port); err != nil {
 			fmt.Println("registation failed")
@@ -100,5 +93,5 @@ func init() {
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	registerCmd.Flags().StringP("pubkey", "k", "id_ed25519.pub", "path to public key relative to $HOME/.ssh")
+	registerCmd.Flags().StringP("key", "k", "id_ed25519.pub", "path to public key relative to $HOME/.ssh")
 }
