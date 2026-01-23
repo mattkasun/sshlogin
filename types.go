@@ -10,9 +10,9 @@ type Login struct {
 }
 
 // Registration contains information to register a new user
-type Registation struct {
+type Registration struct {
 	User string `json:"user"`
-	Key  string `json:"key"`
+	Key  []byte `json:"key"`
 }
 
 // Data contains infomation to post to server

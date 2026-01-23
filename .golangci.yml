@@ -1,0 +1,71 @@
+version: "2"
+run:
+  timeout: 5m
+linters:
+  default: all
+  disable:
+    - depguard
+    - dogsled
+    - forbidigo
+    - gochecknoglobals
+    - nlreturn
+    - noinlineerr
+    - wsl
+    - wsl_v5
+  settings:
+    decorder:
+      disable-dec-order-check: false
+    errcheck:
+      exclude-functions:
+        - io.WriteString
+        - crypto/rand.Read
+        - (net/http.ResponseWriter).Write
+    embeddedstructfieldcheck:
+      empty-line: false
+      forbid-mutex: true
+    exhaustive:
+      default-signifies-exhaustive: true
+      default-case-required: true
+    exhaustruct:
+      allow-empty: true
+      exclude:
+        - net/http.Server
+    funcorder:
+      alphabetical: true
+    gosec:
+      excludes:
+        - G104
+    revive:
+      enable-default-rules: true
+      rules:
+        - name: package-comments
+          disabled: true
+    varnamelen:
+      ignore-decls:
+        - w http.ResponseWriter
+        - r *http.Request
+  exclusions:
+    warn-unused: true
+    generated: lax
+    presets:
+      #- comments
+      - common-false-positives
+      # - legacy
+      - std-error-handling
+formatters:
+  enable:
+    - gofumpt
+    - golines
+  settings:
+    gofumpt:
+      extra-rules: true
+  exclusions:
+    warn-unused: true
+    generated: lax
+issues:
+  max-same-issues: 0
+  max-issues-per-linter: 0
+  uniq-by-line: false
+output:
+  path-mode: "abs"
+
