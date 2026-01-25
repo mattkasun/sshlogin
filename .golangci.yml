@@ -20,6 +20,8 @@ linters:
         - io.WriteString
         - crypto/rand.Read
         - (net/http.ResponseWriter).Write
+        - (*flag.FlagSet).Parse
+        - os.WriteFile
     embeddedstructfieldcheck:
       empty-line: false
       forbid-mutex: true
@@ -35,6 +37,9 @@ linters:
     gosec:
       excludes:
         - G104
+    mnd:
+      ignored-numbers:
+      - '2'
     revive:
       enable-default-rules: true
       rules:
@@ -44,6 +49,10 @@ linters:
       ignore-decls:
         - w http.ResponseWriter
         - r *http.Request
+        - fs *flag.FlagSet
+    wrapcheck:
+      extra-ignore-sigs:
+        - os.WriteFile(
   exclusions:
     warn-unused: true
     generated: lax

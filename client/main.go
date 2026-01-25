@@ -1,0 +1,52 @@
+package main
+
+import (
+	"flag"
+	"fmt"
+	"log"
+	"os"
+)
+
+const (
+	defaultPort = 8080
+)
+
+func main() {
+	log.SetFlags(log.Lshortfile)
+	port := flag.Int("p", defaultPort, "server listening port")
+	server := flag.String("s", "http://localhost", "server url")
+
+	flag.Usage = func() {
+		fmt.Printf("Usage for %s:\n", os.Args[0])
+		fmt.Printf("\n%s [flags] command\n\n", os.Args[0])
+		fmt.Println("Global Flags:")
+		flag.PrintDefaults()
+		fmt.Println("\nCommands:\n",
+			"\tget\t\thttp get request\n",
+			"\tlogin\t\tserver login using ssh key\n",
+			"\tpost\t\tsend post request to server\n",
+			"\tregister\tserver registration user with server",
+		)
+	}
+	flag.Parse()
+
+	if len(os.Args) < 2 {
+		flag.Usage()
+		os.Exit(1)
+	}
+	switch cmd := flag.Args()[0]; cmd {
+	case "get":
+		get(*server, *port, flag.Args()[1:])
+	case "login":
+		login(*server, *port, flag.Args()[1:])
+		// loginCmd.Parse(flag.Args()[1:])
+		// loginCmd.Usage()
+	case "post":
+		post(*server, *port, flag.Args()[1:])
+	case "register":
+		register(*server, *port, flag.Args()[1:])
+	default:
+		flag.CommandLine.Usage()
+		fmt.Println(*port, *server)
+	}
+}
