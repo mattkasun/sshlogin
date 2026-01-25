@@ -16,7 +16,7 @@ func get(server string, port int, args []string) {
 	// log.Println("get args", args)
 	fs := flag.NewFlagSet("get", flag.ExitOnError)
 	fs.Usage = func() {
-		usage(fs, "get", "send request to server", os.Args[0]+" get ip")
+		usage(fs, "get", "path", "send request to server", os.Args[0]+" get ip")
 	}
 	fs.Parse(args)
 	// check for additional flags

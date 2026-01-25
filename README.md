@@ -7,9 +7,8 @@ client and server code to demonstrate using ssh keys for login
     a. client registers with server by calling register endpoint with username and ssh publickey
     b. server stores user data (a simple map for POC only)
 ### Login
-   a. client calls hello endpoint and receives random string to sign
-   b. client signs the string and calls login endpoint with string, ssh signature, and username
-   c. server verifies signature and returns session cookie
+   a. client signs a string and calls login endpoint with string, ssh signature, and username
+   b. server verifies signature and returns session cookie
 ### Application Enpoints
   a. client includes session cookie for calls to application endpoints
 
@@ -21,112 +20,114 @@ Usage:
   server [flags]
 
 Flags:
-      --config string   config file (default is $HOME/.server.yaml)
-  -h, --help            help for server
   -p, --port int        server port (default 8080)
 ````
 # Client Cmd
 ````
-client code to register/login app server using ssh
+client to register/login/interact with app server using ssh
 
 Usage:
-  client [command]
-
-Available Commands:
-  completion  Generate the autocompletion script for the specified shell
-  get         http get request
-  help        Help about any command
-  login       A brief description of your command
-  post        send post request to server
-  register    register user with server
-  version     show version information
+client [flags] command
 
 Flags:
-      --config string   config file (default is $HOME/.client.yaml)
-  -h, --help            help for client
-      --port int        port to connect to (default 8080)
-      --server string   server url (default "http://localhost")
+  -p int
+        server listening port (default 8080)
+  -s string
+        server url (default "http://localhost")
+
+Commands:
+        get             http get request
+        login           server login using ssh key
+        post            send post request to server
+        register        server registration user with server
+
+For help about a command
+         client [command] -h
 ````
 ## register
 ````
 register user with server
 
 Usage:
-  client register username [flags]
-
-Flags:
-  -h, --help         help for register
-  -k, --key string   path to public key relative to $HOME/.ssh (default "id_ed25519.pub")
+client [global flags] register [flags] <username>
 
 Global Flags:
-      --config string   config file (default is $HOME/.client.yaml)
-      --port int        port to connect to (default 8080)
-      --server string   server url (default "http://localhost")
+  -p int
+        server listening port (default 8080)
+  -s string
+        server url (default "http://localhost")
+
+Command Flags
+  -k string
+        name of public ssh key (relative to $HOME/.ssh/) (default "id_ed25519.pub")
+
+Examples:
+client register myName
 ````
 ## login
 ````
-login to an app server with ssh
-
-        a string is retrieved from server, signed with ssh private key;
-string, signature and user name is forwarded to server which will
-return a session cookie for calls to protected endpoints
+login to an app server using ssh
 
 Usage:
-  client login user [flags]
-
-Flags:
-  -h, --help         help for login
-  -k, --key string   name of private ssh key: relative to $HOME/.ssh (default "id_ed25519")
+client [global flags] login [flags] <username>
 
 Global Flags:
-      --config string   config file (default is $HOME/.client.yaml)
-      --port int        port to connect to (default 8080)
-      --server string   server url (default "http://localhost")
+  -p int
+        server listening port (default 8080)
+  -s string
+        server url (default "http://localhost")
+
+Command Flags
+  -k string
+        name of private ssh key (relative to $HOME/.ssh/) (default "id_ed25519")
+
+Examples:
+client login myName
 ````
 ## get
 ```
-send http get request
-
-Ex: ./client get ip
-must be logged in to the server
+send request to server
 
 Usage:
-  client get page [flags]
-
-Flags:
-  -h, --help   help for get
+client [global flags] get [flags] <path>
 
 Global Flags:
-      --config string   config file (default is $HOME/.client.yaml)
-      --port int        port to connect to (default 8080)
-      --server string   server url (default "http://localhost")
+  -p int
+        server listening port (default 8080)
+  -s string
+        server url (default "http://localhost")
+
+Command Flags
+
+Examples:
+client get ip
 ```
 ## post
 ````
-send post request to server specifying page and data in form of key value pairs
-
-        Ex: ./server post lines hello world
+send post to server
 
 Usage:
-  client post page [key value ...] [flags]
-
-Flags:
-  -h, --help   help for post
+client [global flags] post [flags] <path>
 
 Global Flags:
-      --config string   config file (default is $HOME/.client.yaml)
-      --port int        port to connect to (default 8080)
-      --server string   server url (default "http://localhost")
+  -p int
+        server listening port (default 8080)
+  -s string
+        server url (default "http://localhost")
+
+Command Flags
+
+Examples:
+client post lines hello world
 ````
  # Example session
  ````
-~/ssh-login/app/client (master)> ./client register aUser
+> client register aUser
 registration successfull for aUser
-~/ssh-login/app/client (master)> ./client login aUser
+> client login aUser
 login successful
-~/ssh-login/app/client (master)> ./client get ip
+> client get ip
 ip address is 127.0.0.1:38542
-~/ssh-login/app/client (master)> ./client post lines hello world
-[hello world]
+> client post lines hello world
 {"hello":"world"}
 ````

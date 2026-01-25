@@ -20,7 +20,8 @@ func login(server string, port int, args []string) {
 	fs := flag.NewFlagSet("login", flag.ExitOnError)
 	key := fs.String("k", "id_ed25519", "name of private ssh key (relative to $HOME/.ssh/)")
 	fs.Usage = func() {
-		usage(fs, "login", "user login", os.Args[0]+" login myName")
+		usage(fs, "login", "username", "login to an app server using ssh",
+			os.Args[0]+" login myName")
 	}
 	fs.Parse(args)
 
@@ -63,6 +64,7 @@ func login(server string, port int, args []string) {
 		return
 	}
 	saveCookie(response.Cookies())
+	fmt.Println("login successful")
 }
 
 func signMessage(key string) (*ssh.Signature, error) {

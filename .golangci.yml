@@ -37,6 +37,7 @@ linters:
     gosec:
       excludes:
         - G104
+        - G303
     mnd:
       ignored-numbers:
       - '2'

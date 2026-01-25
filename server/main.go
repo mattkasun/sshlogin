@@ -24,7 +24,7 @@ func main() {
 	port := flag.Int("p", defaultPort, "server listening port")
 	flag.Usage = func() {
 		fmt.Println("server which supports user registration and login via ssh")
-		fmt.Printf("\nUsage:\n\n")
+		fmt.Println("\nUsage:")
 		fmt.Println(os.Args[0], "[flags]")
 		fmt.Println("\nFlags")
 		flag.PrintDefaults()

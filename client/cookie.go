@@ -3,32 +3,24 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 )
 
-var dir string
+const cookiefile = "/sshlogin.cookie"
 
 func getCookie() *http.Cookie {
 	cookie := &http.Cookie{}
-	file, err := os.ReadFile(dir + "/cookie")
+	file, err := os.ReadFile(os.TempDir() + cookiefile)
 	if err != nil {
+		fmt.Println("cookie error", err)
 		return cookie
 	}
-	_ = json.Unmarshal(file, &cookie)
+	_ = json.Unmarshal(file, cookie)
 	return cookie
 }
 
 func saveCookie(cookies []*http.Cookie) {
-	if dir == "" {
-		var err error
-		dir, err = os.MkdirTemp("", "sshlogin")
-		if err != nil {
-			log.Println("create temp dir", err)
-			return
-		}
-	}
 	found := false
 	for _, c := range cookies {
 		if c.Name == "sshlogin" {
@@ -38,7 +30,7 @@ func saveCookie(cookies []*http.Cookie) {
 				fmt.Println("marshal cookie", err)
 				return
 			}
-			os.WriteFile(dir+"/cookie", cookie, 0)
+			os.WriteFile(os.TempDir()+cookiefile, cookie, 0)
 			break
 		}
 	}

@@ -15,7 +15,7 @@ import (
 func post(server string, port int, args []string) {
 	fs := flag.NewFlagSet("port", flag.ExitOnError)
 	fs.Usage = func() {
-		usage(fs, "post", "send post to server", os.Args[0]+" post lines hello world")
+		usage(fs, "post", "path", "send post to server", os.Args[0]+" post lines hello world")
 	}
 	fs.Parse(args)
 

@@ -13,10 +13,10 @@ import (
 	"github.com/mattkasun/sshlogin"
 )
 
-func usage(fs *flag.FlagSet, command, description, example string) {
+func usage(fs *flag.FlagSet, command, args, description, example string) {
 	fmt.Println(description)
-	fmt.Printf("Usage:\n\n")
-	fmt.Printf("%s [global flags] %s [flags] <username>\n", os.Args[0], command)
+	fmt.Printf("\nUsage:\n")
+	fmt.Printf("%s [global flags] %s [flags] <%s>\n", os.Args[0], command, args)
 	fmt.Println("\nGlobal Flags:")
 	flag.PrintDefaults()
 	fmt.Println("\nCommand Flags")
@@ -29,7 +29,8 @@ func register(server string, port int, args []string) {
 	fs := flag.NewFlagSet("register", flag.ExitOnError)
 	key := fs.String("k", "id_ed25519.pub", "name of public ssh key (relative to $HOME/.ssh/)")
 	fs.Usage = func() {
-		usage(fs, "register", "register user with server", os.Args[0]+" register myName")
+		usage(fs, "register", "username",
+			"register user with server", os.Args[0]+" register myName")
 	}
 	fs.Parse(args)
 	if len(fs.Args()) != 1 {

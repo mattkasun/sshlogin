@@ -42,6 +42,7 @@ func setupRouter() http.Handler {
 func auth(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if _, err := cookie.Get(r, cookieName); err != nil {
+			slog.Error("cookie", "error", err)
 			http.Error(w, "not authorized", http.StatusUnauthorized)
 			return
 		}
