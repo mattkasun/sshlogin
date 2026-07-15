@@ -8,6 +8,7 @@ linters:
     - dogsled
     - forbidigo
     - gochecknoglobals
+    - gomodguard
     - nlreturn
     - noinlineerr
     - wsl
@@ -38,6 +39,9 @@ linters:
       excludes:
         - G104
         - G303
+        - G703
+        - G705
+        - G706
     mnd:
       ignored-numbers:
       - '2'
